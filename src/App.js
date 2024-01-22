@@ -1,32 +1,35 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import { Route, BrowserRouter, Routes } from 'react-router-dom'
 
 import { Navbar } from './app/Navbar'
+import PostsList from './features/posts/PostsList'
+import AddPostForm from './features/posts/AddPostForm'
+import SinglePostPage from './features/posts/SinglePostPage'
+import EditPostForm from './features/posts/EditPostForm'
 
 function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Navbar />
       <div className="App">
-        <Switch>
+        <Routes>
           <Route
-            exact
             path="/"
-            render={() => (
-              <section>
-                <h2>Welcome to the Redux Essentials example app!</h2>
-              </section>
-            )}
+            element={
+              <React.Fragment>
+                <AddPostForm />
+                <PostsList />
+              </React.Fragment>
+            }
           />
-          <Redirect to="/" />
-        </Switch>
+
+          <Route path="/posts/:postId" Component={SinglePostPage} />
+          <Route path="/editPost/:postId" Component={EditPostForm} />
+          {/* use `const { postId } = useParams()` in components to access params */}
+          {/* use `const navigate = useNavigate(); navigate('/')` instead `const history = useHistory(); history.push(`/posts/${postId}`)`*/}
+        </Routes>
       </div>
-    </Router>
+    </BrowserRouter>
   )
 }
 
